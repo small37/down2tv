@@ -1,0 +1,34 @@
+{
+  "input_name": "就是溜溜的她",
+  "title": "就是溜溜的她",
+  "year": null,
+  "rating": null,
+  "directors": null,
+  "actors": null,
+  "summary": "《就是溜溜的她》 是一部台湾电影，叶振峰出品，由侯孝贤执导，凤飞飞、锺镇涛、陈友等人主演。这是一出都会爱情喜剧。描写企业家之女潘文琦（凤飞飞饰）从台北市逃家到乡下姑婆家散心，而顾大刚（锺镇涛饰）则是从台北出差到乡下进行测量的工程师，二人在乡下相识，进而相恋的故事。\n",
+  "image": null,
+  "source_urls": {
+    "douban": "",
+    "taiwan_cinema": "",
+    "wikipedia": "",
+    "poster_page": "",
+    "all_links": []
+  },
+  "raw": {
+    "douban": {
+      "source": "douban",
+      "url": ""
+    },
+    "taiwan_cinema": {
+      "source": "taiwan_cinema",
+      "url": ""
+    },
+    "wikipedia": {
+      "source": "wikipedia",
+      "title": "就是溜溜的她",
+      "url": "https://zh.wikipedia.org/wiki/%E5%B0%B1%E6%98%AF%E6%BA%9C%E6%BA%9C%E7%9A%84%E5%A5%B9",
+      "description": "《就是溜溜的她》 是一部台湾电影，叶振峰出品，由侯孝贤执导，凤飞飞、锺镇涛、陈友等人主演。这是一出都会爱情喜剧。描写企业家之女潘文琦（凤飞飞饰）从台北市逃家到乡下姑婆家散心，而顾大刚（锺镇涛饰）则是从台北出差到乡下进行测量的工程师，二人在乡下相识，进而相恋的故事。\n",
+      "image": null
+    }
+  }
+}

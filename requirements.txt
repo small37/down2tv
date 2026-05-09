@@ -1,0 +1,4 @@
+upnpclient==1.0.3
+Flask==2.3.0
+Werkzeug<3
+yt-dlp

@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时尚私有云影音服务器</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* 顶部导航与标题 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 25px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+
+        .logo-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: white;
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        /* 状态指示区 */
+        .server-status {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #10b981;
+        }
+
+        .download-panel {
+            margin-bottom: 28px;
+            padding: 18px;
+            border: 1px solid rgba(56, 189, 248, 0.14);
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.08), rgba(15, 23, 42, 0.28));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        .download-form {
+            display: grid;
+            grid-template-columns: minmax(160px, 1fr) minmax(320px, 2fr) auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .download-input {
+            width: 100%;
+            height: 44px;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.74);
+            color: #f8fafc;
+            outline: none;
+            padding: 0 14px;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .download-input::placeholder {
+            color: #64748b;
+        }
+
+        .download-input:focus {
+            border-color: rgba(56, 189, 248, 0.62);
+            background: rgba(15, 23, 42, 0.92);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
+        }
+
+        .btn-download {
+            height: 44px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.24);
+            white-space: nowrap;
+        }
+
+        .btn-download:hover {
+            background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+            box-shadow: 0 10px 24px rgba(14, 165, 233, 0.34);
+            transform: translateY(-1px);
+        }
+
+        .btn-download svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .download-feedback {
+            min-height: 22px;
+            margin-top: 10px;
+            color: #94a3b8;
+            font-size: 13px;
+            line-height: 1.55;
+            overflow-wrap: anywhere;
+        }
+
+        .download-feedback.success {
+            color: #67e8f9;
+        }
+
+        .download-feedback.warning {
+            color: #fbbf24;
+        }
+
+        .download-feedback.error {
+            color: #f87171;
+        }
+
+        .top-tools {
+            display: grid;
+            grid-template-columns: minmax(260px, 0.82fr) minmax(320px, 1.18fr);
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .tool-panel {
+            border: 1px solid rgba(56, 189, 248, 0.14);
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.34);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            padding: 18px;
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+            color: #f8fafc;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .disk-percent {
+            color: #67e8f9;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .disk-meter {
+            position: relative;
+            height: 14px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.86);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+        }
+
+        .disk-meter-fill {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 0%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #22c55e, #06b6d4, #a855f7);
+            transition: width 0.7s ease;
+        }
+
+        .disk-meter-fill::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.28) 38%, transparent 72%);
+            animation: meter-shine 1.8s linear infinite;
+        }
+
+        @keyframes meter-shine {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100%); }
+        }
+
+        .disk-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .disk-stat {
+            min-width: 0;
+            padding: 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.045);
+        }
+
+        .disk-stat-label {
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .disk-stat-value {
+            color: #e2e8f0;
+            font-size: 13px;
+            font-weight: 500;
+            overflow-wrap: anywhere;
+        }
+
+        .disk-path {
+            margin-top: 10px;
+            color: #64748b;
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .chat-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 12px;
+        }
+
+        .btn-chat {
+            height: 44px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.24);
+            white-space: nowrap;
+        }
+
+        .btn-chat:hover {
+            background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
+            box-shadow: 0 10px 24px rgba(6, 182, 212, 0.28);
+            transform: translateY(-1px);
+        }
+
+        .btn-chat svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .chat-output {
+            min-height: 78px;
+            max-height: 260px;
+            overflow: auto;
+            white-space: pre-wrap;
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(2, 6, 23, 0.52);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            color: #cbd5e1;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .download-examples {
+            margin-top: 28px;
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.025);
+            overflow: hidden;
+        }
+
+        .download-examples summary {
+            cursor: pointer;
+            padding: 16px 18px;
+            color: #e2e8f0;
+            font-size: 14px;
+            font-weight: 600;
+            list-style: none;
+        }
+
+        .download-examples summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .download-examples summary::after {
+            content: "展开";
+            float: right;
+            color: #38bdf8;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .download-examples[open] summary::after {
+            content: "收起";
+        }
+
+        .example-content {
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+            padding: 0 18px 18px;
+        }
+
+        .example-title {
+            margin: 16px 0 8px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .example-code {
+            overflow: auto;
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(2, 6, 23, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            color: #dbeafe;
+            font-size: 12px;
+            line-height: 1.55;
+            white-space: pre;
+        }
+
+        /* 影片列表主体 */
+        .video-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        /* 单个影片条目卡片 */
+        .video-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 16px 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .video-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-item.downloading {
+            border-color: rgba(251, 191, 36, 0.22);
+            background: rgba(251, 191, 36, 0.05);
+        }
+
+        .video-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            min-width: 0;
+        }
+
+        /* 极简精致的视频图标 */
+        .video-cover-placeholder {
+            width: 54px;
+            height: 74px;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .video-item:hover .video-cover-placeholder {
+            border-color: rgba(6, 182, 212, 0.4);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+        }
+
+        .video-cover-placeholder svg {
+            width: 24px;
+            height: 24px;
+            stroke: #a855f7;
+            fill: none;
+        }
+
+        .video-details {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .video-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #f8fafc;
+            letter-spacing: 0.3px;
+            transition: color 0.2s;
+            overflow-wrap: anywhere;
+        }
+
+        .video-item:hover .video-title {
+            color: #38bdf8;
+        }
+
+        .video-meta {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .meta-tag {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .status-tag {
+            background: rgba(251, 191, 36, 0.12);
+            border-color: rgba(251, 191, 36, 0.24);
+            color: #fbbf24;
+        }
+
+        .download-progress {
+            color: #fbbf24;
+            font-size: 13px;
+            line-height: 1.45;
+            word-break: break-word;
+            max-width: 680px;
+        }
+
+        /* 按钮组 */
+        .action-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border: none;
+            outline: none;
+        }
+
+        /* 投屏播放按钮 (科技渐变色) */
+        .btn-cast {
+            background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
+        }
+
+        .btn-cast:hover {
+            background: linear-gradient(135deg, #0369a1 0%, #0f766e 100%);
+            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.48;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-cast svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* 删除按钮 (时尚暗红) */
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.25);
+            color: #fca5a5;
+            border-color: rgba(239, 68, 68, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .btn-delete svg {
+            width: 15px;
+            height: 15px;
+            fill: currentColor;
+        }
+
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(2, 6, 23, 0.72);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .confirm-overlay.show {
+            display: flex;
+        }
+
+        .confirm-dialog {
+            width: min(420px, 100%);
+            border: 1px solid rgba(56, 189, 248, 0.22);
+            border-radius: 18px;
+            background: rgba(15, 23, 42, 0.92);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            padding: 26px;
+            transform: translateY(8px) scale(0.98);
+            opacity: 0;
+            transition: all 0.18s ease;
+        }
+
+        .confirm-overlay.show .confirm-dialog {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .confirm-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.24), rgba(13, 148, 136, 0.2));
+            border: 1px solid rgba(56, 189, 248, 0.24);
+            color: #67e8f9;
+        }
+
+        .confirm-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .confirm-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 10px;
+        }
+
+        .confirm-message {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.65;
+            overflow-wrap: anywhere;
+        }
+
+        .confirm-file {
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+
+        .confirm-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 26px;
+        }
+
+        .btn-secondary {
+            background: rgba(148, 163, 184, 0.12);
+            color: #cbd5e1;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(148, 163, 184, 0.2);
+            color: #f8fafc;
+            transform: translateY(-1px);
+        }
+
+        .btn-confirm-cast {
+            background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(2, 132, 199, 0.28);
+        }
+
+        .btn-confirm-cast:hover {
+            background: linear-gradient(135deg, #0369a1 0%, #0f766e 100%);
+            box-shadow: 0 10px 24px rgba(2, 132, 199, 0.38);
+            transform: translateY(-1px);
+        }
+
+        /* 移动端响应式适配 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px 16px;
+                border-radius: 16px;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+                margin-bottom: 24px;
+            }
+            .server-status {
+                flex-wrap: wrap;
+                border-radius: 16px;
+            }
+            .download-form {
+                grid-template-columns: 1fr;
+            }
+            .btn-download {
+                width: 100%;
+                justify-content: center;
+            }
+            .top-tools {
+                grid-template-columns: 1fr;
+            }
+            .disk-stats {
+                grid-template-columns: 1fr;
+            }
+            .chat-form {
+                grid-template-columns: 1fr;
+            }
+            .btn-chat {
+                width: 100%;
+                justify-content: center;
+            }
+            .video-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+                padding: 16px;
+            }
+            .video-info {
+                width: 100%;
+            }
+            .video-meta {
+                flex-wrap: wrap;
+            }
+            .action-group {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .btn {
+                flex: 1;
+                justify-content: center;
+                padding: 10px 14px;
+            }
+            .confirm-actions {
+                flex-direction: column-reverse;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0-2-.9-2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <h1>Cloud Stream Pro</h1>
+                    <p>时尚、极速的私有云服务器文件管理</p>
+                </div>
+            </div>
+            
+            <div class="server-status">
+                <div class="status-item">
+                    <span class="status-dot"></span>
+                    <span>服务器状态: 正常</span>
+                </div>
+                <div class="status-item" style="color: #64748b;">|</div>
+                <div class="status-item">
+                    <span>文件数: <span id="file-count">0</span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="top-tools">
+            <div class="tool-panel disk-panel">
+                <div class="panel-title">
+                    <span>磁盘空间</span>
+                    <span class="disk-percent" id="disk-percent">--%</span>
+                </div>
+                <div class="disk-meter" aria-label="磁盘空间使用率">
+                    <div class="disk-meter-fill" id="disk-meter-fill"></div>
+                </div>
+                <div class="disk-stats">
+                    <div class="disk-stat">
+                        <div class="disk-stat-label">已用</div>
+                        <div class="disk-stat-value" id="disk-used">--</div>
+                    </div>
+                    <div class="disk-stat">
+                        <div class="disk-stat-label">剩余</div>
+                        <div class="disk-stat-value" id="disk-free">--</div>
+                    </div>
+                    <div class="disk-stat">
+                        <div class="disk-stat-label">总量</div>
+                        <div class="disk-stat-value" id="disk-total">--</div>
+                    </div>
+                </div>
+                <div class="disk-path" id="disk-path">读取磁盘信息中...</div>
+            </div>
+
+            <div class="tool-panel chat-panel">
+                <div class="panel-title">
+                    <span>Hermes Chat</span>
+                </div>
+                <form class="chat-form" id="chat-form">
+                    <input class="download-input" id="chat-input" type="text" autocomplete="off" placeholder="输入内容发送给 Hermes">
+                    <button class="btn btn-chat" id="chat-submit" type="submit">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
+                        </svg>
+                        发送聊天
+                    </button>
+                </form>
+                <pre class="chat-output" id="chat-output">等待输入...</pre>
+            </div>
+        </div>
+
+        <div class="download-panel">
+            <form class="download-form" id="download-form">
+                <input class="download-input" id="movie-name-input" name="name" type="text" autocomplete="off" placeholder="电影名称（可选）">
+                <input class="download-input" id="download-url-input" name="url" type="url" autocomplete="off" placeholder="输入 m3u8 视频网址" required>
+                <button class="btn btn-download" id="download-submit" type="submit">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/>
+                    </svg>
+                    确认下载
+                </button>
+            </form>
+            <div class="download-feedback" id="download-feedback">输入网址后会在后台下载，列表会自动刷新进度。</div>
+        </div>
+
+        <div class="video-list" id="video-list">
+            <div class="video-item">
+                <div class="video-info">
+                    <div class="video-cover-placeholder">
+                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 3h18v18H3z" fill="rgba(255,255,255,0.04)"></path>
+                        </svg>
+                    </div>
+                    <div class="video-details">
+                        <div class="video-title">加载中，请稍候...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <details class="download-examples">
+            <summary>download 网址调用方法案例</summary>
+            <div class="example-content">
+                <div class="example-title">JSON POST</div>
+                <pre class="example-code">curl -X POST "http://localhost:5001/api/download" \
+  -H "Content-Type: application/json" \
+  -d '{"url":"https://hn.bfvvs.com/play/en5rEk5d/index.m3u8","name":"电影名"}'</pre>
+
+                <div class="example-title">表单 POST</div>
+                <pre class="example-code">curl -X POST "http://localhost:5001/api/download" \
+  -d "url=https://hn.bfvvs.com/play/en5rEk5d/index.m3u8" \
+  -d "name=电影名"</pre>
+
+                <div class="example-title">URL 参数 GET</div>
+                <pre class="example-code">curl "http://localhost:5001/api/download?url=https%3A%2F%2Fhn.bfvvs.com%2Fplay%2Fen5rEk5d%2Findex.m3u8&name=%E7%94%B5%E5%BD%B1%E5%90%8D"</pre>
+            </div>
+        </details>
+    </div>
+
+    <div class="confirm-overlay" id="cast-confirm" aria-hidden="true">
+        <div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="cast-confirm-title">
+            <div class="confirm-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M1 18v3h3c0-1.66-1.34-3-3-3zm0-4v2c2.76 0 5 2.24 5 5h2c0-3.87-3.13-7-7-7zm0-4v2c4.97 0 9 4.03 9 9h2c0-6.08-4.92-11-11-11zm20-7H3c-1.1 0-2 .9-2 2v3h2V5h18v14h-7v2h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+                </svg>
+            </div>
+            <div class="confirm-title" id="cast-confirm-title">确认投屏播放</div>
+            <div class="confirm-message">
+                即将把 <span class="confirm-file" id="cast-confirm-file"></span> 推送到客厅设备播放。
+            </div>
+            <div class="confirm-actions">
+                <button class="btn btn-secondary" id="cast-confirm-cancel">取消</button>
+                <button class="btn btn-confirm-cast" id="cast-confirm-ok">确认投屏</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const videoListEl = document.getElementById('video-list');
+        const fileCountEl = document.getElementById('file-count');
+        const castConfirmEl = document.getElementById('cast-confirm');
+        const castConfirmFileEl = document.getElementById('cast-confirm-file');
+        const castConfirmOkBtn = document.getElementById('cast-confirm-ok');
+        const castConfirmCancelBtn = document.getElementById('cast-confirm-cancel');
+        const downloadFormEl = document.getElementById('download-form');
+        const downloadUrlInputEl = document.getElementById('download-url-input');
+        const movieNameInputEl = document.getElementById('movie-name-input');
+        const downloadSubmitBtn = document.getElementById('download-submit');
+        const downloadFeedbackEl = document.getElementById('download-feedback');
+        const diskPercentEl = document.getElementById('disk-percent');
+        const diskMeterFillEl = document.getElementById('disk-meter-fill');
+        const diskUsedEl = document.getElementById('disk-used');
+        const diskFreeEl = document.getElementById('disk-free');
+        const diskTotalEl = document.getElementById('disk-total');
+        const diskPathEl = document.getElementById('disk-path');
+        const chatFormEl = document.getElementById('chat-form');
+        const chatInputEl = document.getElementById('chat-input');
+        const chatSubmitBtn = document.getElementById('chat-submit');
+        const chatOutputEl = document.getElementById('chat-output');
+        const REFRESH_INTERVAL_MS = 2000;
+        const DISK_REFRESH_INTERVAL_MS = 10000;
+        let isFetchingVideos = false;
+        let isSubmittingDownload = false;
+        let isChatting = false;
+        let pendingCastConfirm = null;
+
+        function parseResolution(fileName) {
+            const lower = fileName.toLowerCase();
+            if (lower.includes('2160') || lower.includes('4k')) return '4K Ultra HD';
+            if (lower.includes('1080')) return '1080P';
+            if (lower.includes('720')) return '720P';
+            return '高清';
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;',
+            }[char]));
+        }
+
+        function createVideoItem(video) {
+            const item = document.createElement('div');
+            const isDownloading = video.status === 'downloading';
+            const fileName = video.name;
+            const fileExt = isDownloading
+                ? fileName.replace(/\.part$/i, '').split('.').pop()
+                : fileName.split('.').pop();
+            item.className = `video-item${isDownloading ? ' downloading' : ''}`;
+
+            const progressHtml = isDownloading
+                ? `<div class="download-progress">下载进度: ${escapeHtml(video.progress || '等待进度更新...')}</div>`
+                : '';
+
+            item.innerHTML = `
+                <div class="video-info">
+                    <div class="video-cover-placeholder">
+                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+                            <line x1="7" y1="2" x2="7" y2="22"></line>
+                            <line x1="17" y1="2" x2="17" y2="22"></line>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <line x1="2" y1="7" x2="7" y2="7"></line>
+                            <line x1="2" y1="17" x2="7" y2="17"></line>
+                            <line x1="17" y1="17" x2="22" y2="17"></line>
+                            <line x1="17" y1="7" x2="22" y2="7"></line>
+                        </svg>
+                    </div>
+                    <div class="video-details">
+                        <div class="video-title">${escapeHtml(video.name)}</div>
+                        <div class="video-meta">
+                            <span>大小: <strong style="color: #cbd5e1;">${escapeHtml(video.size)}</strong></span>
+                            <span>格式: <span class="meta-tag">${escapeHtml(fileExt.toUpperCase())}</span></span>
+                            <span>分辨率: <span class="meta-tag">${escapeHtml(parseResolution(video.name))}</span></span>
+                            ${isDownloading ? '<span class="meta-tag status-tag">正在下载</span>' : ''}
+                        </div>
+                        ${progressHtml}
+                    </div>
+                </div>
+                <div class="action-group">
+                    <button class="btn btn-cast" data-file="${encodeURIComponent(video.name)}" ${isDownloading ? 'disabled title="下载完成后才能投屏播放"' : ''}> 
+                        <svg viewBox="0 0 24 24">
+                            <path d="M1 18v3h3c0-1.66-1.34-3-3-3zm0-4v2c2.76 0 5 2.24 5 5h2c0-3.87-3.13-7-7-7zm0-4v2c4.97 0 9 4.03 9 9h2c0-6.08-4.92-11-11-11zm20-7H3c-1.1 0-2 .9-2 2v3h2V5h18v14h-7v2h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+                        </svg>
+                        投屏播放
+                    </button>
+                    <button class="btn btn-delete" data-file="${encodeURIComponent(video.name)}">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                        </svg>
+                        删除
+                    </button>
+                </div>
+            `;
+
+            const castBtn = item.querySelector('.btn-cast');
+            const deleteBtn = item.querySelector('.btn-delete');
+
+            if (!isDownloading) {
+                castBtn.addEventListener('click', () => castVideo(fileName));
+            }
+            deleteBtn.addEventListener('click', () => deleteVideo(fileName));
+
+            return item;
+        }
+
+        function updateStatus(count) {
+            fileCountEl.textContent = count;
+        }
+
+        function showMessage(message, title = '提示') {
+            window.alert(`${title}：${message}`);
+        }
+
+        function setDownloadFeedback(message, type = '') {
+            downloadFeedbackEl.textContent = message;
+            downloadFeedbackEl.className = `download-feedback${type ? ` ${type}` : ''}`;
+        }
+
+        function setDownloadSubmitting(isSubmitting) {
+            isSubmittingDownload = isSubmitting;
+            downloadSubmitBtn.disabled = isSubmitting;
+            downloadSubmitBtn.innerHTML = isSubmitting
+                ? `<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10h-2a8 8 0 1 1-8-8V2z"/></svg>提交中`
+                : `<svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>确认下载`;
+        }
+
+        function setChatSubmitting(isSubmitting) {
+            isChatting = isSubmitting;
+            chatSubmitBtn.disabled = isSubmitting;
+            chatSubmitBtn.innerHTML = isSubmitting
+                ? `<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10h-2a8 8 0 1 1-8-8V2z"/></svg>等待返回`
+                : `<svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>发送聊天`;
+        }
+
+        function updateDiskUsage(disk) {
+            const percent = Number(disk.percent || 0);
+            const safePercent = Math.max(0, Math.min(percent, 100));
+            diskPercentEl.textContent = `${safePercent.toFixed(1)}%`;
+            diskMeterFillEl.style.width = `${safePercent}%`;
+            diskUsedEl.textContent = disk.used_text || '--';
+            diskFreeEl.textContent = disk.free_text || '--';
+            diskTotalEl.textContent = disk.total_text || '--';
+            diskPathEl.textContent = disk.path ? `路径：${disk.path}` : '磁盘路径未知';
+
+            if (safePercent >= 90) {
+                diskMeterFillEl.style.background = 'linear-gradient(90deg, #f97316, #ef4444)';
+            } else if (safePercent >= 75) {
+                diskMeterFillEl.style.background = 'linear-gradient(90deg, #fbbf24, #f97316)';
+            } else {
+                diskMeterFillEl.style.background = 'linear-gradient(90deg, #22c55e, #06b6d4, #a855f7)';
+            }
+        }
+
+        function closeCastConfirm(result) {
+            castConfirmEl.classList.remove('show');
+            castConfirmEl.setAttribute('aria-hidden', 'true');
+            if (pendingCastConfirm) {
+                pendingCastConfirm(result);
+                pendingCastConfirm = null;
+            }
+        }
+
+        function confirmCast(fileName) {
+            castConfirmFileEl.textContent = fileName;
+            castConfirmEl.classList.add('show');
+            castConfirmEl.setAttribute('aria-hidden', 'false');
+            castConfirmOkBtn.focus();
+
+            return new Promise((resolve) => {
+                pendingCastConfirm = resolve;
+            });
+        }
+
+        async function fetchVideos(options = {}) {
+            if (isFetchingVideos) return;
+            isFetchingVideos = true;
+            const showLoading = options.showLoading ?? false;
+
+            if (showLoading) {
+                videoListEl.innerHTML = '';
+                const placeholder = document.createElement('div');
+                placeholder.className = 'video-item';
+                placeholder.innerHTML = `
+                    <div class="video-info">
+                        <div class="video-cover-placeholder">
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 3h18v18H3z" fill="rgba(255,255,255,0.04)"></path>
+                            </svg>
+                        </div>
+                        <div class="video-details">
+                            <div class="video-title">加载中，请稍候...</div>
+                        </div>
+                    </div>
+                `;
+                videoListEl.appendChild(placeholder);
+            }
+
+            try {
+                const response = await fetch('/api/videos');
+                if (!response.ok) throw new Error(`请求失败：${response.status}`);
+                const result = await response.json();
+                const videos = Array.isArray(result.videos) ? result.videos : [];
+
+                videoListEl.innerHTML = '';
+                updateStatus(videos.length);
+
+                if (videos.length === 0) {
+                    const empty = document.createElement('div');
+                    empty.className = 'video-item';
+                    empty.innerHTML = `
+                        <div class="video-info">
+                            <div class="video-cover-placeholder">
+                                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 3h18v18H3z" fill="rgba(255,255,255,0.04)"></path>
+                                </svg>
+                            </div>
+                            <div class="video-details">
+                                <div class="video-title">当前目录没有可用视频</div>
+                            </div>
+                        </div>
+                    `;
+                    videoListEl.appendChild(empty);
+                    return;
+                }
+
+                videos.forEach((video) => {
+                    videoListEl.appendChild(createVideoItem(video));
+                });
+            } catch (error) {
+                if (showLoading) {
+                    videoListEl.innerHTML = '';
+                    showMessage(error.message || '加载视频列表失败', '错误');
+                }
+            } finally {
+                isFetchingVideos = false;
+            }
+        }
+
+        async function fetchDiskUsage() {
+            try {
+                const response = await fetch('/api/disk');
+                const result = await response.json();
+                if (!response.ok || !result.success) {
+                    throw new Error(result.message || '读取磁盘信息失败');
+                }
+                updateDiskUsage(result);
+            } catch (error) {
+                diskPathEl.textContent = error.message || '读取磁盘信息失败';
+            }
+        }
+
+        async function castVideo(fileName) {
+            const confirmed = await confirmCast(fileName);
+            if (!confirmed) return;
+
+            try {
+                const response = await fetch('/api/cast', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ file: fileName }),
+                });
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    showMessage(result.message || '正在投屏', '成功');
+                } else {
+                    throw new Error(result.message || '投屏失败');
+                }
+            } catch (error) {
+                showMessage(error.message || '投屏请求失败', '错误');
+            }
+        }
+
+        async function deleteVideo(fileName) {
+            if (!window.confirm(`确认删除文件：${fileName}？`)) return;
+            try {
+                const response = await fetch('/api/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ file: fileName }),
+                });
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    showMessage(result.message || '已删除视频', '成功');
+                    fetchVideos();
+                } else {
+                    throw new Error(result.message || '删除失败');
+                }
+            } catch (error) {
+                showMessage(error.message || '删除请求失败', '错误');
+            }
+        }
+
+        async function submitDownload(event) {
+            event.preventDefault();
+            if (isSubmittingDownload) return;
+
+            const url = downloadUrlInputEl.value.trim();
+            const movieName = movieNameInputEl.value.trim();
+
+            if (!url) {
+                setDownloadFeedback('请先输入视频网址。', 'error');
+                downloadUrlInputEl.focus();
+                return;
+            }
+
+            if (!/^https?:\/\//i.test(url)) {
+                setDownloadFeedback('下载地址需要以 http:// 或 https:// 开头。', 'error');
+                downloadUrlInputEl.focus();
+                return;
+            }
+
+            setDownloadSubmitting(true);
+            setDownloadFeedback('正在提交后台下载任务...', '');
+
+            try {
+                const response = await fetch('/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url, name: movieName }),
+                });
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.message || '提交下载任务失败');
+                }
+
+                const statusType = result.duplicate ? 'warning' : 'success';
+                const statusText = result.duplicate
+                    ? `${result.message || '该链接已存在'}：${result.movie_name || movieName || '未命名视频'}`
+                    : `已加入后台下载：${result.movie_name || movieName || '未命名视频'}，PID ${result.pid}`;
+                setDownloadFeedback(statusText, statusType);
+                downloadUrlInputEl.value = '';
+                movieNameInputEl.value = '';
+                fetchVideos({ showLoading: false });
+            } catch (error) {
+                setDownloadFeedback(error.message || '下载请求失败，请稍后重试。', 'error');
+            } finally {
+                setDownloadSubmitting(false);
+            }
+        }
+
+        async function submitChat(event) {
+            event.preventDefault();
+            if (isChatting) return;
+
+            const prompt = chatInputEl.value.trim();
+            if (!prompt) {
+                chatOutputEl.textContent = '请输入要发送给 Hermes 的内容。';
+                chatInputEl.focus();
+                return;
+            }
+
+            setChatSubmitting(true);
+            chatOutputEl.textContent = `执行中：hermes chat -Q -q "${prompt}"`;
+
+            try {
+                const response = await fetch('/api/hermes-chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt }),
+                });
+                const result = await response.json();
+                if (!response.ok || !result.success) {
+                    throw new Error(result.output || result.message || 'Hermes 调用失败');
+                }
+                chatOutputEl.textContent = result.output || 'Hermes 没有返回内容。';
+            } catch (error) {
+                chatOutputEl.textContent = error.message || 'Hermes 请求失败。';
+            } finally {
+                setChatSubmitting(false);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchVideos({ showLoading: true });
+            fetchDiskUsage();
+            window.setInterval(() => fetchVideos({ showLoading: false }), REFRESH_INTERVAL_MS);
+            window.setInterval(fetchDiskUsage, DISK_REFRESH_INTERVAL_MS);
+        });
+
+        downloadFormEl.addEventListener('submit', submitDownload);
+        chatFormEl.addEventListener('submit', submitChat);
+        castConfirmOkBtn.addEventListener('click', () => closeCastConfirm(true));
+        castConfirmCancelBtn.addEventListener('click', () => closeCastConfirm(false));
+        castConfirmEl.addEventListener('click', (event) => {
+            if (event.target === castConfirmEl) closeCastConfirm(false);
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && castConfirmEl.classList.contains('show')) {
+                closeCastConfirm(false);
+            }
+        });
+    </script>
+</body>
+</html>
