@@ -103,9 +103,7 @@ def movie_name_from_url(url):
 def download_request_data():
     json_data = request.get_json(silent=True) or {}
     return {
-        "url": str(
-            json_data.get("url") or request.values.get("url") or ""
-        ).strip(),
+        "url": str(json_data.get("url") or request.values.get("url") or "").strip(),
         "movie_name": (
             json_data.get("name")
             or json_data.get("movie_name")
@@ -175,7 +173,7 @@ def get_video_files():
     video_files = []
     try:
         raw = os.listdir(MOVIE_DIR)
-        print(f"[get_video_files] 扫描目录: {MOVIE_DIR}, 发现 {len(raw)} 个条目: {raw}")
+        # print(f"[get_video_files] 扫描目录: {MOVIE_DIR}, 发现 {len(raw)} 个条目: {raw}")
         for file in raw:
             # 跳过隐藏文件、目录、macOS 系统文件
             if file.startswith(".") or file == "movie":
@@ -218,9 +216,9 @@ def get_video_files():
             )
 
         video_files.sort(key=lambda x: x["modified_time"], reverse=True)
-        print(
-            f"[get_video_files] 过滤后剩余 {len(video_files)} 个视频: {[v['name'] for v in video_files]}"
-        )
+        # print(
+        #     f"[get_video_files] 过滤后剩余 {len(video_files)} 个视频: {[v['name'] for v in video_files]}"
+        # )
     except Exception as e:
         print(f"获取视频文件列表失败: {e}")
     return video_files
@@ -371,13 +369,24 @@ def serve_movie(filename):
     return send_from_directory(MOVIE_DIR, filename)
 
 
+@app.route("/api/devices")
+def get_devices():
+    try:
+        caster = DLNACaster(timeout=5)
+        device_names = caster.discover_devices()
+        devices = [{"id": i + 1, "name": name} for i, name in enumerate(device_names)]
+        return jsonify({"success": True, "devices": devices})
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+
+
 @app.route("/api/cast", methods=["POST"])
 def cast_video():
+    print(f"[cast_video] 收到投屏请求: {request.data}")
     data = request.json
     video_file = data.get("file")
-    # device_name = data.get("device")
-    device_name = dlnaname
-    print(f"[cast_video] 请求投屏: file={video_file}, device={dlnaname}")
+    device_name = data.get("device") or dlnaname
+    print(f"[cast_video] 请求投屏: file={video_file}, device={device_name}")
     if not video_file:
         return jsonify({"success": False, "message": "未指定视频文件"}), 400
     if not dlnaname:
@@ -445,4 +454,4 @@ if __name__ == "__main__":
     print(f"本机访问: http://127.0.0.1:{port}")
     print(f"局域网访问: http://{ip}:{port}")
 
-    app.run(debug=True, host="0.0.0.0", port=port)
+    app.run(debug=True, host="192.168.1.104", port=port)

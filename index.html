@@ -675,7 +675,110 @@
             transform: translateY(-1px);
         }
 
-        /* 移动端响应式适配 */
+        .device-scan-status {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .device-scan-status.scanning::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-left: 8px;
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            border-top-color: #38bdf8;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .device-list {
+            margin-top: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            border-radius: 10px;
+            background: rgba(2, 6, 23, 0.52);
+        }
+
+        .device-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+            transition: background 0.2s;
+        }
+
+        .device-item:last-child {
+            border-bottom: none;
+        }
+
+        .device-item:hover {
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        .device-item.selected {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .device-item-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.2), rgba(13, 148, 136, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .device-item-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: #38bdf8;
+        }
+
+        .device-item-name {
+            flex: 1;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+
+        .device-item-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(148, 163, 184, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .device-item.selected .device-item-check {
+            background: #0ea5e9;
+            border-color: #0ea5e9;
+        }
+
+        .device-item.selected .device-item-check svg {
+            width: 12px;
+            height: 12px;
+            fill: white;
+        }
+
+        .confirm-file {
+            color: #e2e8f0;
+            font-weight: 500;
+        }
         @media (max-width: 768px) {
             .container {
                 padding: 24px 16px;
@@ -864,13 +967,17 @@
                     <path d="M1 18v3h3c0-1.66-1.34-3-3-3zm0-4v2c2.76 0 5 2.24 5 5h2c0-3.87-3.13-7-7-7zm0-4v2c4.97 0 9 4.03 9 9h2c0-6.08-4.92-11-11-11zm20-7H3c-1.1 0-2 .9-2 2v3h2V5h18v14h-7v2h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
                 </svg>
             </div>
-            <div class="confirm-title" id="cast-confirm-title">确认投屏播放</div>
+            <div class="confirm-title" id="cast-confirm-title">选择投屏设备</div>
             <div class="confirm-message">
-                即将把 <span class="confirm-file" id="cast-confirm-file"></span> 推送到客厅设备播放。
+                <div id="cast-file-name"></div>
+                <div id="device-scan-status" class="device-scan-status">正在扫描局域网设备...</div>
+                <div id="device-list" class="device-list" style="display:none;"></div>
+                <div id="device-no-devices" class="device-scan-status" style="display:none;">未发现任何 DLNA 设备</div>
             </div>
             <div class="confirm-actions">
                 <button class="btn btn-secondary" id="cast-confirm-cancel">取消</button>
-                <button class="btn btn-confirm-cast" id="cast-confirm-ok">确认投屏</button>
+                <button class="btn btn-secondary" id="refresh-devices-btn" style="display:none;">刷新设备</button>
+                <button class="btn btn-confirm-cast" id="cast-confirm-ok" disabled>确认投屏</button>
             </div>
         </div>
     </div>
@@ -879,9 +986,14 @@
         const videoListEl = document.getElementById('video-list');
         const fileCountEl = document.getElementById('file-count');
         const castConfirmEl = document.getElementById('cast-confirm');
-        const castConfirmFileEl = document.getElementById('cast-confirm-file');
+        const castConfirmTitleEl = document.getElementById('cast-confirm-title');
+        const castConfirmFileEl = document.getElementById('cast-file-name');
         const castConfirmOkBtn = document.getElementById('cast-confirm-ok');
         const castConfirmCancelBtn = document.getElementById('cast-confirm-cancel');
+        const deviceScanStatusEl = document.getElementById('device-scan-status');
+        const deviceListEl = document.getElementById('device-list');
+        const deviceNoDevicesEl = document.getElementById('device-no-devices');
+        const refreshDevicesBtn = document.getElementById('refresh-devices-btn');
         const downloadFormEl = document.getElementById('download-form');
         const downloadUrlInputEl = document.getElementById('download-url-input');
         const movieNameInputEl = document.getElementById('movie-name-input');
@@ -903,6 +1015,9 @@
         let isSubmittingDownload = false;
         let isChatting = false;
         let pendingCastConfirm = null;
+        let selectedDevice = null;
+        let pendingFileName = null;
+        let castConfirmDevice = null;
 
         function parseResolution(fileName) {
             const lower = fileName.toLowerCase();
@@ -1036,23 +1151,94 @@
         }
 
         function closeCastConfirm(result) {
+            if (!result) {
+                castConfirmDevice = null;
+            }
             castConfirmEl.classList.remove('show');
             castConfirmEl.setAttribute('aria-hidden', 'true');
+            selectedDevice = null;
+            pendingFileName = null;
             if (pendingCastConfirm) {
                 pendingCastConfirm(result);
                 pendingCastConfirm = null;
             }
         }
 
-        function confirmCast(fileName) {
-            castConfirmFileEl.textContent = fileName;
+        function openCastModal(fileName) {
+            pendingFileName = fileName;
+            castConfirmTitleEl.textContent = '选择投屏设备';
+            castConfirmFileEl.textContent = `视频：${fileName}`;
+            castConfirmFileEl.style.display = '';
+            deviceScanStatusEl.textContent = '正在扫描局域网设备...';
+            deviceScanStatusEl.classList.add('scanning');
+            deviceScanStatusEl.style.display = '';
+            deviceListEl.style.display = 'none';
+            deviceNoDevicesEl.style.display = 'none';
+            deviceListEl.innerHTML = '';
+            refreshDevicesBtn.style.display = 'none';
+            castConfirmOkBtn.disabled = true;
+            selectedDevice = null;
             castConfirmEl.classList.add('show');
             castConfirmEl.setAttribute('aria-hidden', 'false');
             castConfirmOkBtn.focus();
+            scanDevices();
+        }
 
-            return new Promise((resolve) => {
-                pendingCastConfirm = resolve;
+        async function scanDevices() {
+            deviceScanStatusEl.classList.add('scanning');
+            deviceScanStatusEl.style.display = '';
+            deviceScanStatusEl.textContent = '正在扫描局域网设备...';
+            deviceNoDevicesEl.style.display = 'none';
+            refreshDevicesBtn.style.display = 'none';
+            castConfirmOkBtn.disabled = true;
+            selectedDevice = null;
+
+            try {
+                const response = await fetch('/api/devices');
+                const result = await response.json();
+                deviceScanStatusEl.classList.remove('scanning');
+                if (!response.ok || !result.success || !result.devices.length) {
+                    deviceScanStatusEl.style.display = 'none';
+                    deviceNoDevicesEl.style.display = '';
+                    refreshDevicesBtn.style.display = '';
+                    return;
+                }
+                deviceScanStatusEl.style.display = 'none';
+                deviceListEl.style.display = '';
+                deviceListEl.innerHTML = '';
+                result.devices.forEach((device) => {
+                    const item = document.createElement('div');
+                    item.className = 'device-item';
+                    item.dataset.deviceName = device.name;
+                    item.innerHTML = `
+                        <div class="device-item-icon">
+                            <svg viewBox="0 0 24 24"><path d="M1 18v3h3c0-1.66-1.34-3-3-3zm0-4v2c2.76 0 5 2.24 5 5h2c0-3.87-3.13-7-7-7zm0-4v2c4.97 0 9 4.03 9 9h2c0-6.08-4.92-11-11-11zm20-7H3c-1.1 0-2 .9-2 2v3h2V5h18v14h-7v2h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                        </div>
+                        <div class="device-item-name">${escapeHtml(device.name)}</div>
+                        <div class="device-item-check">
+                            <svg viewBox="0 0 24 24" style="display:none;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        </div>
+                    `;
+                    item.addEventListener('click', () => selectDevice(device.name, item));
+                    deviceListEl.appendChild(item);
+                });
+            } catch (error) {
+                deviceScanStatusEl.classList.remove('scanning');
+                deviceScanStatusEl.textContent = '扫描失败，请稍后重试';
+                refreshDevicesBtn.style.display = '';
+            }
+        }
+
+        function selectDevice(deviceName, itemEl) {
+            deviceListEl.querySelectorAll('.device-item').forEach((el) => {
+                el.classList.remove('selected');
+                el.querySelector('.device-item-check svg').style.display = 'none';
             });
+            itemEl.classList.add('selected');
+            itemEl.querySelector('.device-item-check svg').style.display = '';
+            selectedDevice = deviceName;
+            castConfirmDevice = deviceName;
+            castConfirmOkBtn.disabled = false;
         }
 
         async function fetchVideos(options = {}) {
@@ -1134,14 +1320,22 @@
         }
 
         async function castVideo(fileName) {
-            const confirmed = await confirmCast(fileName);
-            if (!confirmed) return;
+            openCastModal(fileName);
+
+            await new Promise((resolve) => {
+                pendingCastConfirm = resolve;
+            });
+
+            const deviceToCast = castConfirmDevice;
+            closeCastConfirm(false);
+
+            if (!deviceToCast) return;
 
             try {
                 const response = await fetch('/api/cast', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ file: fileName }),
+                    body: JSON.stringify({ file: fileName, device: deviceToCast }),
                 });
                 const result = await response.json();
                 if (response.ok && result.success) {
@@ -1266,6 +1460,7 @@
         chatFormEl.addEventListener('submit', submitChat);
         castConfirmOkBtn.addEventListener('click', () => closeCastConfirm(true));
         castConfirmCancelBtn.addEventListener('click', () => closeCastConfirm(false));
+        refreshDevicesBtn.addEventListener('click', () => scanDevices());
         castConfirmEl.addEventListener('click', (event) => {
             if (event.target === castConfirmEl) closeCastConfirm(false);
         });
