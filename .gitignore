@@ -1,2 +1,4 @@
 movie/
 remotion-showcase/
+__pycache__/
+.DS_Store

@@ -6,6 +6,22 @@
     <title>时尚私有云影音服务器</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        :root {
+            --bg-0: #060b2d;
+            --bg-1: #121447;
+            --bg-2: #25115a;
+            --panel: rgba(39, 20, 88, 0.72);
+            --panel-strong: rgba(49, 25, 110, 0.82);
+            --line: rgba(183, 107, 255, 0.3);
+            --line-soft: rgba(166, 115, 255, 0.16);
+            --text-main: #f8ecff;
+            --text-muted: #b7a4da;
+            --teal: #47e5d2;
+            --pink: #ff4fa5;
+            --orange: #ffc145;
+            --danger: #ff6a7a;
+            --btn-hot: linear-gradient(135deg, #ffb347 0%, #ff4fa5 100%);
+        }
 
         * {
             margin: 0;
@@ -15,8 +31,11 @@
         }
 
         body {
-            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
-            color: #ffffff;
+            background:
+                radial-gradient(1200px 500px at 15% -10%, rgba(77, 112, 255, 0.24), transparent 60%),
+                radial-gradient(1000px 600px at 100% 0%, rgba(255, 75, 193, 0.2), transparent 58%),
+                linear-gradient(135deg, var(--bg-0) 0%, #090d35 45%, var(--bg-2) 100%);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -28,13 +47,17 @@
         .container {
             width: 100%;
             max-width: 1200px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background:
+                linear-gradient(150deg, rgba(44, 23, 102, 0.82) 0%, rgba(26, 20, 79, 0.8) 52%, rgba(30, 29, 101, 0.82) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--line);
             border-radius: 24px;
             padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            box-shadow:
+                0 28px 70px rgba(6, 4, 28, 0.58),
+                inset 0 1px 0 rgba(233, 189, 255, 0.16),
+                inset 0 0 0 1px rgba(255, 126, 221, 0.06);
         }
 
         /* 顶部导航与标题 */
@@ -43,7 +66,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 40px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid var(--line-soft);
             padding-bottom: 25px;
         }
 
@@ -56,12 +79,12 @@
         .logo-icon {
             width: 42px;
             height: 42px;
-            background: linear-gradient(135deg, #a855f7 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, #be59ff 0%, #7c5cff 55%, #3f5bff 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+            box-shadow: 0 10px 24px rgba(164, 94, 255, 0.45);
         }
 
         .logo-icon svg {
@@ -74,14 +97,14 @@
             font-size: 22px;
             font-weight: 700;
             letter-spacing: 0.5px;
-            background: linear-gradient(to right, #ffffff, #94a3b8);
+            background: linear-gradient(to right, #fff7ff, #d7c7ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .logo-text p {
             font-size: 12px;
-            color: #64748b;
+            color: var(--text-muted);
             margin-top: 2px;
         }
 
@@ -90,10 +113,10 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(95, 58, 161, 0.26);
             padding: 8px 16px;
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(206, 126, 255, 0.22);
         }
 
         .status-item {
@@ -101,7 +124,7 @@
             align-items: center;
             gap: 8px;
             font-size: 13px;
-            color: #94a3b8;
+            color: #d1b5f2;
         }
 
         .status-dot {
@@ -115,10 +138,10 @@
         .download-panel {
             margin-bottom: 28px;
             padding: 18px;
-            border: 1px solid rgba(56, 189, 248, 0.14);
+            border: 1px solid var(--line);
             border-radius: 16px;
-            background: linear-gradient(135deg, rgba(2, 132, 199, 0.08), rgba(15, 23, 42, 0.28));
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            background: linear-gradient(160deg, rgba(55, 30, 124, 0.62), rgba(33, 21, 88, 0.72));
+            box-shadow: inset 0 1px 0 rgba(255, 220, 254, 0.1);
         }
 
         .download-form {
@@ -131,10 +154,10 @@
         .download-input {
             width: 100%;
             height: 44px;
-            border: 1px solid rgba(148, 163, 184, 0.18);
+            border: 1px solid rgba(188, 126, 255, 0.3);
             border-radius: 12px;
-            background: rgba(15, 23, 42, 0.74);
-            color: #f8fafc;
+            background: rgba(27, 20, 79, 0.72);
+            color: #ffecff;
             outline: none;
             padding: 0 14px;
             font-size: 14px;
@@ -142,26 +165,26 @@
         }
 
         .download-input::placeholder {
-            color: #64748b;
+            color: #8f79be;
         }
 
         .download-input:focus {
-            border-color: rgba(56, 189, 248, 0.62);
-            background: rgba(15, 23, 42, 0.92);
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
+            border-color: rgba(255, 112, 203, 0.66);
+            background: rgba(35, 23, 95, 0.92);
+            box-shadow: 0 0 0 3px rgba(255, 103, 196, 0.18);
         }
 
         .btn-download {
             height: 44px;
-            background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 100%);
+            background: var(--btn-hot);
             color: #ffffff;
-            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.24);
+            box-shadow: 0 8px 22px rgba(255, 76, 169, 0.28);
             white-space: nowrap;
         }
 
         .btn-download:hover {
-            background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
-            box-shadow: 0 10px 24px rgba(14, 165, 233, 0.34);
+            background: linear-gradient(135deg, #ffaf3e 0%, #ff3e98 100%);
+            box-shadow: 0 12px 26px rgba(255, 76, 169, 0.36);
             transform: translateY(-1px);
         }
 
@@ -200,10 +223,10 @@
         }
 
         .tool-panel {
-            border: 1px solid rgba(56, 189, 248, 0.14);
+            border: 1px solid var(--line);
             border-radius: 16px;
-            background: rgba(15, 23, 42, 0.34);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            background: linear-gradient(160deg, var(--panel-strong), rgba(37, 19, 93, 0.72));
+            box-shadow: inset 0 1px 0 rgba(255, 218, 253, 0.08);
             padding: 18px;
         }
 
@@ -219,9 +242,10 @@
         }
 
         .disk-percent {
-            color: #67e8f9;
+            color: var(--orange);
             font-size: 22px;
             font-weight: 700;
+            text-shadow: 0 0 14px rgba(255, 193, 69, 0.34);
         }
 
         .disk-meter {
@@ -229,8 +253,8 @@
             height: 14px;
             overflow: hidden;
             border-radius: 999px;
-            background: rgba(15, 23, 42, 0.86);
-            border: 1px solid rgba(148, 163, 184, 0.14);
+            background: rgba(20, 16, 66, 0.9);
+            border: 1px solid rgba(179, 125, 255, 0.26);
         }
 
         .disk-meter-fill {
@@ -238,21 +262,8 @@
             inset: 0 auto 0 0;
             width: 0%;
             border-radius: inherit;
-            background: linear-gradient(90deg, #22c55e, #06b6d4, #a855f7);
+            background: linear-gradient(90deg, #ffc445 0%, #ff9252 38%, #ff4fa5 100%);
             transition: width 0.7s ease;
-        }
-
-        .disk-meter-fill::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.28) 38%, transparent 72%);
-            animation: meter-shine 1.8s linear infinite;
-        }
-
-        @keyframes meter-shine {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(100%); }
         }
 
         .disk-stats {
@@ -266,18 +277,18 @@
             min-width: 0;
             padding: 10px;
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.035);
-            border: 1px solid rgba(255, 255, 255, 0.045);
+            background: rgba(35, 24, 93, 0.6);
+            border: 1px solid rgba(183, 122, 255, 0.18);
         }
 
         .disk-stat-label {
-            color: #64748b;
+            color: #aa93d2;
             font-size: 12px;
             margin-bottom: 4px;
         }
 
         .disk-stat-value {
-            color: #e2e8f0;
+            color: #ffebff;
             font-size: 13px;
             font-weight: 500;
             overflow-wrap: anywhere;
@@ -285,7 +296,7 @@
 
         .disk-path {
             margin-top: 10px;
-            color: #64748b;
+            color: #aa93d2;
             font-size: 12px;
             overflow-wrap: anywhere;
         }
@@ -298,15 +309,15 @@
 
         .btn-chat {
             height: 44px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+            background: var(--btn-hot);
             color: #fff;
-            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.24);
+            box-shadow: 0 8px 20px rgba(255, 90, 174, 0.26);
             white-space: nowrap;
         }
 
         .btn-chat:hover {
-            background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
-            box-shadow: 0 10px 24px rgba(6, 182, 212, 0.28);
+            background: linear-gradient(135deg, #ffa93f 0%, #ff438f 100%);
+            box-shadow: 0 10px 24px rgba(255, 90, 174, 0.34);
             transform: translateY(-1px);
         }
 
@@ -324,18 +335,18 @@
             margin-top: 12px;
             padding: 12px;
             border-radius: 12px;
-            background: rgba(2, 6, 23, 0.52);
-            border: 1px solid rgba(148, 163, 184, 0.12);
-            color: #cbd5e1;
+            background: rgba(24, 19, 76, 0.72);
+            border: 1px solid rgba(179, 124, 255, 0.22);
+            color: #e8d5ff;
             font-size: 13px;
             line-height: 1.6;
         }
 
         .download-examples {
             margin-top: 28px;
-            border: 1px solid rgba(148, 163, 184, 0.12);
+            border: 1px solid var(--line);
             border-radius: 16px;
-            background: rgba(255, 255, 255, 0.025);
+            background: linear-gradient(160deg, rgba(42, 25, 101, 0.72), rgba(28, 20, 77, 0.78));
             overflow: hidden;
         }
 
@@ -399,18 +410,18 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: linear-gradient(160deg, rgba(33, 22, 91, 0.76), rgba(22, 18, 72, 0.84));
+            border: 1px solid rgba(186, 124, 255, 0.24);
             border-radius: 16px;
             padding: 16px 24px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .video-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.12);
+            background: linear-gradient(160deg, rgba(43, 28, 111, 0.8), rgba(30, 24, 93, 0.88));
+            border-color: rgba(223, 125, 255, 0.42);
             transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 16px 34px rgba(10, 8, 42, 0.44);
         }
 
         .video-item.downloading {
@@ -429,9 +440,9 @@
         .video-cover-placeholder {
             width: 54px;
             height: 74px;
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+            background: linear-gradient(135deg, rgba(196, 93, 255, 0.4) 0%, rgba(128, 87, 255, 0.46) 100%);
             border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(230, 161, 255, 0.32);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -440,14 +451,29 @@
         }
 
         .video-item:hover .video-cover-placeholder {
-            border-color: rgba(6, 182, 212, 0.4);
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+            border-color: rgba(255, 174, 221, 0.6);
+            box-shadow: 0 0 20px rgba(200, 102, 255, 0.4);
+        }
+
+        .video-cover-placeholder.playable,
+        .video-title.playable {
+            cursor: pointer;
+        }
+
+        .video-cover-placeholder.playable:hover {
+            transform: scale(1.03);
+        }
+
+        .video-title.playable:hover {
+            color: #ffd3f6;
+            text-decoration: underline;
+            text-underline-offset: 4px;
         }
 
         .video-cover-placeholder svg {
             width: 24px;
             height: 24px;
-            stroke: #a855f7;
+            stroke: #ffe9ff;
             fill: none;
         }
 
@@ -468,7 +494,7 @@
         }
 
         .video-item:hover .video-title {
-            color: #38bdf8;
+            color: #ffd3f6;
         }
 
         .video-meta {
@@ -476,14 +502,14 @@
             align-items: center;
             gap: 14px;
             font-size: 13px;
-            color: #64748b;
+            color: #ac96d8;
         }
 
         .meta-tag {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(108, 77, 176, 0.35);
             padding: 2px 8px;
             border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(190, 124, 255, 0.22);
         }
 
         .status-tag {
@@ -517,20 +543,21 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.25s ease;
-            border: none;
+            border: 1px solid transparent;
             outline: none;
         }
 
         /* 投屏播放按钮 (科技渐变色) */
         .btn-cast {
-            background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+            background: linear-gradient(135deg, #ffc145 0%, #ff9c42 45%, #ff5f7c 100%);
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
+            border-color: rgba(255, 190, 95, 0.45);
+            box-shadow: 0 8px 20px rgba(255, 131, 94, 0.36);
         }
 
         .btn-cast:hover {
-            background: linear-gradient(135deg, #0369a1 0%, #0f766e 100%);
-            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+            background: linear-gradient(135deg, #ffb73f 0%, #ff843e 45%, #ff4b71 100%);
+            box-shadow: 0 12px 26px rgba(255, 109, 106, 0.45);
             transform: translateY(-1px);
         }
 
@@ -554,15 +581,15 @@
 
         /* 删除按钮 (时尚暗红) */
         .btn-delete {
-            background: rgba(239, 68, 68, 0.1);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.2);
+            background: rgba(87, 36, 84, 0.56);
+            color: #ff8c98;
+            border: 1px solid rgba(255, 118, 148, 0.28);
         }
 
         .btn-delete:hover {
-            background: rgba(239, 68, 68, 0.25);
-            color: #fca5a5;
-            border-color: rgba(239, 68, 68, 0.35);
+            background: rgba(114, 40, 91, 0.75);
+            color: #ffb4c2;
+            border-color: rgba(255, 136, 165, 0.45);
             transform: translateY(-1px);
         }
 
@@ -580,7 +607,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background: rgba(2, 6, 23, 0.72);
+            background: rgba(10, 8, 35, 0.78);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
@@ -591,10 +618,10 @@
 
         .confirm-dialog {
             width: min(420px, 100%);
-            border: 1px solid rgba(56, 189, 248, 0.22);
+            border: 1px solid rgba(194, 123, 255, 0.35);
             border-radius: 18px;
-            background: rgba(15, 23, 42, 0.92);
-            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            background: linear-gradient(155deg, rgba(48, 24, 108, 0.94), rgba(24, 18, 80, 0.92));
+            box-shadow: 0 28px 70px rgba(8, 6, 34, 0.62), inset 0 1px 0 rgba(255, 219, 255, 0.1);
             padding: 26px;
             transform: translateY(8px) scale(0.98);
             opacity: 0;
@@ -606,6 +633,57 @@
             opacity: 1;
         }
 
+        .player-dialog {
+            width: min(980px, 100%);
+            border: 1px solid rgba(194, 123, 255, 0.3);
+            border-radius: 18px;
+            background: linear-gradient(155deg, rgba(41, 24, 98, 0.96), rgba(21, 17, 74, 0.95));
+            box-shadow: 0 28px 70px rgba(7, 5, 32, 0.66), inset 0 1px 0 rgba(255, 219, 255, 0.1);
+            padding: 18px;
+            transform: translateY(8px) scale(0.98);
+            opacity: 0;
+            transition: all 0.18s ease;
+        }
+
+        .confirm-overlay.show .player-dialog {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .player-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .player-title {
+            min-width: 0;
+            color: #f8fafc;
+            font-size: 16px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .player-close {
+            flex: 0 0 auto;
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .web-player {
+            display: block;
+            width: 100%;
+            max-height: min(70vh, 620px);
+            border-radius: 12px;
+            background: #020617;
+            outline: none;
+        }
+
         .confirm-icon {
             width: 48px;
             height: 48px;
@@ -614,9 +692,9 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 18px;
-            background: linear-gradient(135deg, rgba(2, 132, 199, 0.24), rgba(13, 148, 136, 0.2));
-            border: 1px solid rgba(56, 189, 248, 0.24);
-            color: #67e8f9;
+            background: linear-gradient(135deg, rgba(196, 93, 255, 0.28), rgba(121, 98, 255, 0.26));
+            border: 1px solid rgba(217, 140, 255, 0.34);
+            color: #ffe4ff;
         }
 
         .confirm-icon svg {
@@ -633,14 +711,14 @@
         }
 
         .confirm-message {
-            color: #94a3b8;
+            color: #c9b4e7;
             font-size: 14px;
             line-height: 1.65;
             overflow-wrap: anywhere;
         }
 
         .confirm-file {
-            color: #e2e8f0;
+            color: #ffecff;
             font-weight: 500;
         }
 
@@ -652,26 +730,61 @@
         }
 
         .btn-secondary {
-            background: rgba(148, 163, 184, 0.12);
-            color: #cbd5e1;
-            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(90, 56, 152, 0.34);
+            color: #e3d3ff;
+            border: 1px solid rgba(194, 124, 255, 0.24);
         }
 
         .btn-secondary:hover {
-            background: rgba(148, 163, 184, 0.2);
-            color: #f8fafc;
+            background: rgba(118, 68, 180, 0.5);
+            color: #fff1ff;
             transform: translateY(-1px);
         }
 
         .btn-confirm-cast {
-            background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+            background: var(--btn-hot);
             color: #fff;
-            box-shadow: 0 8px 20px rgba(2, 132, 199, 0.28);
+            border: 1px solid rgba(255, 178, 99, 0.36);
+            box-shadow: 0 8px 22px rgba(255, 88, 170, 0.3);
         }
 
         .btn-confirm-cast:hover {
-            background: linear-gradient(135deg, #0369a1 0%, #0f766e 100%);
-            box-shadow: 0 10px 24px rgba(2, 132, 199, 0.38);
+            background: linear-gradient(135deg, #ffad42 0%, #ff3f95 100%);
+            box-shadow: 0 12px 28px rgba(255, 88, 170, 0.42);
+            transform: translateY(-1px);
+        }
+
+        .confirm-dialog.delete-dialog {
+            border: 1px solid rgba(248, 113, 113, 0.28);
+            background:
+                radial-gradient(circle at top right, rgba(239, 68, 68, 0.18), transparent 46%),
+                rgba(15, 23, 42, 0.94);
+        }
+
+        .delete-dialog .confirm-icon {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.26), rgba(251, 113, 133, 0.18));
+            border: 1px solid rgba(248, 113, 113, 0.32);
+            color: #fda4af;
+        }
+
+        .delete-dialog .confirm-title {
+            color: #ffe4e6;
+        }
+
+        .delete-dialog .confirm-message {
+            color: #fecdd3;
+        }
+
+        .btn-confirm-delete {
+            background: linear-gradient(135deg, #dc2626 0%, #e11d48 100%);
+            color: #fff;
+            border: 1px solid rgba(251, 113, 133, 0.32);
+            box-shadow: 0 10px 22px rgba(190, 24, 93, 0.34);
+        }
+
+        .btn-confirm-delete:hover {
+            background: linear-gradient(135deg, #b91c1c 0%, #be123c 100%);
+            box-shadow: 0 12px 26px rgba(190, 24, 93, 0.42);
             transform: translateY(-1px);
         }
 
@@ -838,6 +951,12 @@
             .confirm-actions {
                 flex-direction: column-reverse;
             }
+            .player-dialog {
+                padding: 14px;
+            }
+            .web-player {
+                max-height: 62vh;
+            }
         }
     </style>
 </head>
@@ -982,6 +1101,32 @@
         </div>
     </div>
 
+    <div class="confirm-overlay" id="video-player-modal" aria-hidden="true">
+        <div class="player-dialog" role="dialog" aria-modal="true" aria-labelledby="video-player-title">
+            <div class="player-header">
+                <div class="player-title" id="video-player-title"></div>
+                <button class="btn btn-secondary player-close" id="video-player-close" type="button" title="关闭播放器">×</button>
+            </div>
+            <video class="web-player" id="web-video-player" controls preload="metadata"></video>
+        </div>
+    </div>
+
+    <div class="confirm-overlay" id="delete-confirm" aria-hidden="true">
+        <div class="confirm-dialog delete-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-confirm-title">
+            <div class="confirm-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1z"/>
+                </svg>
+            </div>
+            <div class="confirm-title" id="delete-confirm-title">确认删除视频</div>
+            <div class="confirm-message">删除后无法恢复，请确认是否删除：<span id="delete-file-name" class="confirm-file"></span></div>
+            <div class="confirm-actions">
+                <button class="btn btn-secondary" id="delete-confirm-cancel">取消</button>
+                <button class="btn btn-confirm-delete" id="delete-confirm-ok">确认删除</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const videoListEl = document.getElementById('video-list');
         const fileCountEl = document.getElementById('file-count');
@@ -1009,6 +1154,14 @@
         const chatInputEl = document.getElementById('chat-input');
         const chatSubmitBtn = document.getElementById('chat-submit');
         const chatOutputEl = document.getElementById('chat-output');
+        const videoPlayerModalEl = document.getElementById('video-player-modal');
+        const videoPlayerTitleEl = document.getElementById('video-player-title');
+        const videoPlayerCloseBtn = document.getElementById('video-player-close');
+        const webVideoPlayerEl = document.getElementById('web-video-player');
+        const deleteConfirmEl = document.getElementById('delete-confirm');
+        const deleteFileNameEl = document.getElementById('delete-file-name');
+        const deleteConfirmOkBtn = document.getElementById('delete-confirm-ok');
+        const deleteConfirmCancelBtn = document.getElementById('delete-confirm-cancel');
         const REFRESH_INTERVAL_MS = 2000;
         const DISK_REFRESH_INTERVAL_MS = 10000;
         let isFetchingVideos = false;
@@ -1018,6 +1171,7 @@
         let selectedDevice = null;
         let pendingFileName = null;
         let castConfirmDevice = null;
+        let pendingDeleteConfirm = null;
 
         function parseResolution(fileName) {
             const lower = fileName.toLowerCase();
@@ -1052,7 +1206,7 @@
 
             item.innerHTML = `
                 <div class="video-info">
-                    <div class="video-cover-placeholder">
+                    <div class="video-cover-placeholder playable" title="网页播放">
                         <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
                             <line x1="7" y1="2" x2="7" y2="22"></line>
@@ -1065,7 +1219,7 @@
                         </svg>
                     </div>
                     <div class="video-details">
-                        <div class="video-title">${escapeHtml(video.name)}</div>
+                        <div class="video-title playable" title="网页播放">${escapeHtml(video.name)}</div>
                         <div class="video-meta">
                             <span>大小: <strong style="color: #cbd5e1;">${escapeHtml(video.size)}</strong></span>
                             <span>格式: <span class="meta-tag">${escapeHtml(fileExt.toUpperCase())}</span></span>
@@ -1093,9 +1247,13 @@
 
             const castBtn = item.querySelector('.btn-cast');
             const deleteBtn = item.querySelector('.btn-delete');
+            const coverEl = item.querySelector('.video-cover-placeholder');
+            const titleEl = item.querySelector('.video-title');
 
             if (!isDownloading) {
                 castBtn.addEventListener('click', () => castVideo(fileName));
+                coverEl.addEventListener('click', () => openVideoPlayer(fileName));
+                titleEl.addEventListener('click', () => openVideoPlayer(fileName));
             }
             deleteBtn.addEventListener('click', () => deleteVideo(fileName));
 
@@ -1150,6 +1308,24 @@
             }
         }
 
+        function openVideoPlayer(fileName) {
+            videoPlayerTitleEl.textContent = fileName;
+            webVideoPlayerEl.src = `/movie/${encodeURIComponent(fileName)}`;
+            videoPlayerModalEl.classList.add('show');
+            videoPlayerModalEl.setAttribute('aria-hidden', 'false');
+            webVideoPlayerEl.focus();
+            webVideoPlayerEl.play().catch(() => {});
+        }
+
+        function closeVideoPlayer() {
+            webVideoPlayerEl.pause();
+            webVideoPlayerEl.removeAttribute('src');
+            webVideoPlayerEl.load();
+            videoPlayerModalEl.classList.remove('show');
+            videoPlayerModalEl.setAttribute('aria-hidden', 'true');
+            videoPlayerTitleEl.textContent = '';
+        }
+
         function closeCastConfirm(result) {
             if (!result) {
                 castConfirmDevice = null;
@@ -1162,6 +1338,25 @@
                 pendingCastConfirm(result);
                 pendingCastConfirm = null;
             }
+        }
+
+        function closeDeleteConfirm(result) {
+            deleteConfirmEl.classList.remove('show');
+            deleteConfirmEl.setAttribute('aria-hidden', 'true');
+            if (pendingDeleteConfirm) {
+                pendingDeleteConfirm(result);
+                pendingDeleteConfirm = null;
+            }
+        }
+
+        function confirmDelete(fileName) {
+            deleteFileNameEl.textContent = fileName;
+            deleteConfirmEl.classList.add('show');
+            deleteConfirmEl.setAttribute('aria-hidden', 'false');
+            deleteConfirmOkBtn.focus();
+            return new Promise((resolve) => {
+                pendingDeleteConfirm = resolve;
+            });
         }
 
         function openCastModal(fileName) {
@@ -1349,7 +1544,8 @@
         }
 
         async function deleteVideo(fileName) {
-            if (!window.confirm(`确认删除文件：${fileName}？`)) return;
+            const confirmed = await confirmDelete(fileName);
+            if (!confirmed) return;
             try {
                 const response = await fetch('/api/delete', {
                     method: 'POST',
@@ -1464,9 +1660,24 @@
         castConfirmEl.addEventListener('click', (event) => {
             if (event.target === castConfirmEl) closeCastConfirm(false);
         });
+        deleteConfirmOkBtn.addEventListener('click', () => closeDeleteConfirm(true));
+        deleteConfirmCancelBtn.addEventListener('click', () => closeDeleteConfirm(false));
+        deleteConfirmEl.addEventListener('click', (event) => {
+            if (event.target === deleteConfirmEl) closeDeleteConfirm(false);
+        });
+        videoPlayerCloseBtn.addEventListener('click', closeVideoPlayer);
+        videoPlayerModalEl.addEventListener('click', (event) => {
+            if (event.target === videoPlayerModalEl) closeVideoPlayer();
+        });
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && castConfirmEl.classList.contains('show')) {
                 closeCastConfirm(false);
+            }
+            if (event.key === 'Escape' && videoPlayerModalEl.classList.contains('show')) {
+                closeVideoPlayer();
+            }
+            if (event.key === 'Escape' && deleteConfirmEl.classList.contains('show')) {
+                closeDeleteConfirm(false);
             }
         });
     </script>

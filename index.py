@@ -10,6 +10,7 @@ import threading
 import re
 import shutil
 import subprocess
+from html import escape
 from datetime import datetime
 from urllib.parse import quote
 import socket
@@ -369,6 +370,59 @@ def serve_movie(filename):
     return send_from_directory(MOVIE_DIR, filename)
 
 
+@app.route("/movie")
+@app.route("/movie/")
+def movie_index():
+    ensure_movie_dir()
+    try:
+        entries = sorted(
+            os.scandir(MOVIE_DIR),
+            key=lambda item: (not item.is_dir(), item.name.lower()),
+        )
+    except Exception as e:
+        return f"<h1>读取目录失败</h1><pre>{escape(str(e))}</pre>", 500
+
+    rows = []
+    for entry in entries:
+        name = entry.name
+        escaped_name = escape(name)
+        if entry.is_dir():
+            rows.append(f"<li>📁 {escaped_name}/</li>")
+        else:
+            href = f"/movie/{quote(name)}"
+            size = format_disk_size(entry.stat().st_size)
+            rows.append(
+                f'<li>📄 <a href="{href}" target="_blank">{escaped_name}</a> '
+                f'<span style="color:#666;">({size})</span></li>'
+            )
+
+    if not rows:
+        rows.append("<li>（目录为空）</li>")
+
+    html = f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>movie 目录文件列表</title>
+  <style>
+    body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 24px; }}
+    h1 {{ margin-bottom: 8px; }}
+    .path {{ color: #666; margin-bottom: 16px; }}
+    ul {{ line-height: 1.9; padding-left: 20px; }}
+    a {{ color: #0366d6; text-decoration: none; }}
+    a:hover {{ text-decoration: underline; }}
+  </style>
+</head>
+<body>
+  <h1>movie 目录文件列表</h1>
+  <div class="path">{escape(os.path.abspath(MOVIE_DIR))}</div>
+  <ul>{''.join(rows)}</ul>
+</body>
+</html>"""
+    return html
+
+
 @app.route("/api/devices")
 def get_devices():
     try:
@@ -441,6 +495,8 @@ def get_local_ip():
         # 这个地址不会真的连接，只是用来获取本机出口IP
         s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
+    except OSError:
+        ip = "127.0.0.1"
     finally:
         s.close()
     return ip
@@ -449,9 +505,9 @@ def get_local_ip():
 if __name__ == "__main__":
     ensure_movie_dir()
     ip = get_local_ip()
-    port = 5001
+    port = 5002
 
     print(f"本机访问: http://127.0.0.1:{port}")
     print(f"局域网访问: http://{ip}:{port}")
 
-    app.run(debug=True, host="192.168.1.104", port=port)
+    app.run(debug=True, host=ip, port=port)
